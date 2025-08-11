@@ -5,11 +5,11 @@ using System.Text.Json;
 using System.Xml;
 using System.Xml.Linq;
 
-public class CustomersCronJob : IJob
+public class ProductsCronJob : IJob
 {
     private readonly IRabbitMqPublisher _publisher;
     private readonly ILogger<CustomersCronJob> _logger;
-    public CustomersCronJob(IRabbitMqPublisher publisher, ILogger<CustomersCronJob> logger)
+    public ProductsCronJob(IRabbitMqPublisher publisher, ILogger<CustomersCronJob> logger)
     {
         _publisher = publisher;
         _logger = logger;
@@ -20,11 +20,11 @@ public class CustomersCronJob : IJob
       string folderPath = Environment.GetEnvironmentVariable("INCOMING_XML_PATH") ?? "/app/IncomingXml"; // Change to your folder path
         _logger.LogInformation("Customer Cron job triggered at: {time}", DateTimeOffset.Now);
         string processedPath = folderPath + "/Processed";
-        folderPath += "/Customers";
+        folderPath += "/Products";
         
         if (!Directory.Exists(folderPath))
             Directory.CreateDirectory(folderPath);
-     
+       
 
 
         foreach (var file in Directory.GetFiles(folderPath, "*.xml"))
@@ -32,7 +32,7 @@ public class CustomersCronJob : IJob
            
             var content = File.ReadAllText(file);
             var doc = XDocument.Parse(content);
-            
+          
             // Convert XML to JSON string
             string jsonContent = JsonConvert.SerializeXNode(doc, Newtonsoft.Json.Formatting.None, omitRootObject: true);
 
@@ -43,7 +43,7 @@ public class CustomersCronJob : IJob
             
             string destFile = Path.Combine(processedPath, Path.GetFileName(file));
             File.Move(file, destFile, true);
-            
+           
             _logger.LogInformation($"Published and moved file: {Path.GetFileName(file)}");
         }
 
