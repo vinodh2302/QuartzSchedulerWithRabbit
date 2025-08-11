@@ -8,7 +8,7 @@ namespace WMSSystems.Models
  
         [Key]
         public string orderId { get; set; }
-        public Product product { get; set; }
+        public string productId { get; set; }
         public int quantity { get; set; }
     }
 }
