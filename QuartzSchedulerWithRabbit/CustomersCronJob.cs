@@ -36,7 +36,7 @@ public class CustomersCronJob : IJob
             // Convert XML to JSON string
             string jsonContent = JsonConvert.SerializeXNode(doc, Newtonsoft.Json.Formatting.None, omitRootObject: true);
 
-            _publisher.Publish("OrderProcessing", jsonContent);
+            _publisher.Publish("CustomerProcessing", jsonContent);
            
             if (!Directory.Exists(processedPath))
                 Directory.CreateDirectory(processedPath);

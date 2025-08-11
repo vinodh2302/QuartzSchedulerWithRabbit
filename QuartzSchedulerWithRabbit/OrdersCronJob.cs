@@ -12,7 +12,7 @@ public class OrdersCronJob : IJob
 
     public Task Execute(IJobExecutionContext context)
     {
-        string folderPath = Environment.GetEnvironmentVariable("INCOMING_XML_PATH") ?? "/app/IncomingXml/Orders";
+        string folderPath = Environment.GetEnvironmentVariable("INCOMING_XML_PATH") ?? "/app/IncomingXml";
 
         if (!Directory.Exists(folderPath))
             Directory.CreateDirectory(folderPath);

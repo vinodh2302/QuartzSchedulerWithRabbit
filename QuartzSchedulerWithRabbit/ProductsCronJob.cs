@@ -18,7 +18,7 @@ public class ProductsCronJob : IJob
     public Task Execute(IJobExecutionContext context)
     {
       string folderPath = Environment.GetEnvironmentVariable("INCOMING_XML_PATH") ?? "/app/IncomingXml"; // Change to your folder path
-        _logger.LogInformation("Customer Cron job triggered at: {time}", DateTimeOffset.Now);
+        _logger.LogInformation("Product Cron job triggered at: {time}", DateTimeOffset.Now);
         string processedPath = folderPath + "/Processed";
         folderPath += "/Products";
         
@@ -36,7 +36,7 @@ public class ProductsCronJob : IJob
             // Convert XML to JSON string
             string jsonContent = JsonConvert.SerializeXNode(doc, Newtonsoft.Json.Formatting.None, omitRootObject: true);
 
-            _publisher.Publish("OrderProcessing", jsonContent);
+            _publisher.Publish("ProductProcessing", jsonContent);
            
             if (!Directory.Exists(processedPath))
                 Directory.CreateDirectory(processedPath);
